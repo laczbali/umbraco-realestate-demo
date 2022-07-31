@@ -1,62 +1,58 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Web.PublishedModels.Home>
 
+@using ClientDependency.Core.Mvc
+@using Umbraco.Web.PublishedModels
+
 @{
 	Layout = "Master.cshtml";
+
+	var listings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
+	.Children()
+	.OfType<ListingItem>()
+	.Where(x => x.IsVisible());
 }
 
 @* the fun starts here *@
 
-<div>
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam faucibus porttitor lorem in scelerisque. Interdum
-	et
-	malesuada fames ac ante ipsum primis in faucibus. Proin sagittis lorem sit amet maximus molestie. Quisque non tortor
-	vel
-	augue hendrerit varius. Maecenas commodo metus a elit posuere aliquet. Vestibulum ante ipsum primis in faucibus orci
-	luctus et ultrices posuere cubilia curae; Vestibulum sed consequat erat. Cras eget libero ac orci tristique ultrices
-	non
-	id odio.
+
+<div class="intro intro-carousel">
+	<div id="carousel" class="owl-carousel owl-theme">
+
+		@foreach (var item in listings)
+		{
+			<div class="carousel-item-a intro-item bg-image" style="background-image: url(img/slide-1.jpg)">
+				<div class="overlay overlay-a"></div>
+				<div class="intro-content display-table">
+					<div class="table-cell">
+						<div class="container">
+							<div class="row">
+								<div class="col-lg-8">
+									<div class="intro-body">
+										<p class="intro-title-top">
+											@item.Region Region
+										</p>
+										<h1 class="intro-title mb-4">
+											@item.Headline
+										</h1>
+										<p class="intro-subtitle intro-price">
+											<a href="@item.Url">
+												<span class="price-a">
+													@item.ListingType | DKK @String.Format("{0:# ##0 ##0}", item.Price)
+												</span>
+											</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+	</div>
 </div>
 
 <div>
-	Etiam cursus consequat metus non vestibulum. Nullam malesuada dignissim velit, vel viverra nunc porta vel. Praesent
-	in
-	sagittis urna. Fusce fringilla urna quis convallis laoreet. Nunc consequat sed eros et tincidunt. Nunc vel sem eget
-	ex
-	elementum maximus. Cras non quam sem.
-</div>
-
-<div>
-	Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer pulvinar fermentum
-	suscipit. Mauris vel ante vitae dolor facilisis scelerisque non vel justo. Suspendisse pulvinar, tortor ut fermentum
-	placerat, elit lorem fringilla orci, ac auctor dolor ex sed metus. Morbi ex quam, gravida vel ullamcorper ac, ornare
-	sed
-	nisl. Vivamus eget cursus purus. Etiam in venenatis neque, a euismod odio. Quisque a nibh vitae augue ultricies
-	viverra.
-	Donec tempus, erat a dignissim pretium, sapien elit gravida tellus, quis faucibus arcu nisl in est. Etiam commodo
-	elit
-	sed condimentum porta.
-</div>
-
-<div>
-	Aliquam erat volutpat. Phasellus diam ante, suscipit vitae turpis non, faucibus tristique ipsum. Nullam porttitor
-	purus
-	vel hendrerit aliquam. Phasellus imperdiet tellus non purus consequat, tempus porta justo commodo. Fusce
-	pellentesque ex
-	vitae odio euismod dictum. Vestibulum dictum eros in eros ullamcorper, ut sodales elit tempor. In gravida arcu quis
-	metus porttitor, eget tempor nulla hendrerit. Sed ac ipsum nec ante convallis egestas eu a nunc. Mauris non est
-	fringilla, pellentesque massa sed, congue diam. Sed dictum quam nunc, eu malesuada magna feugiat eget. Morbi finibus
-	at
-	magna sit amet tristique. Nulla semper neque non nunc congue accumsan. Donec ac velit quis leo efficitur auctor.
-	Etiam
-	faucibus ante mauris, eu vehicula magna posuere non. In hac habitasse platea dictumst. Donec consequat a nulla eget
-	semper.
-</div>
-
-<div>
-	Donec vestibulum dui enim, nec semper velit tristique ut. Nam scelerisque sem eget lacus scelerisque laoreet.
-	Vestibulum
-	ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce lacinia erat et tempus auctor.
-	Nulla
-	condimentum magna quis rutrum porttitor. Nulla ornare id justo sit amet maximus. Curabitur bibendum lorem nec nulla
-	molestie, at mollis ante rutrum.
+	@Model.MainContent
 </div>

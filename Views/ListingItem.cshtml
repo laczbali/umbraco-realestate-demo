@@ -1,0 +1,19 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Web.PublishedModels.ListingItem>
+
+@{
+	Layout = "Master.cshtml";
+}
+
+@* the fun starts here *@
+
+<div style="padding-top: 12rem;">
+
+	<div class="mb-3">
+		@Model.Headline
+	</div>
+
+	<div class="mb-3">
+		@Model.Description
+	</div>
+
+</div>
