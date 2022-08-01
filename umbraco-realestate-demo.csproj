@@ -299,6 +299,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\style.css" />
+    <Content Include="assets\css\umbraco-grid.css" />
     <Content Include="assets\js\main.js" />
     <Content Include="assets\lib\animate\animate.css" />
     <Content Include="assets\lib\animate\animate.min.css" />
