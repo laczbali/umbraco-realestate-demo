@@ -3,11 +3,30 @@
 @{
     Layout = "Master.cshtml";
 
-    var listings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
+    const int ITEMS_PER_PAGE = 3;
+
+    // get which page the user is currently on (default to the first page if not found)
+    int currentPage;
+    int.TryParse(Request.QueryString["page"], out currentPage);
+    if (currentPage == 0)
+    {
+        currentPage = 1;
+    }
+
+    // get all listings, sort by most recent first
+    var allListings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
         .Children()
         .OfType<ListingItem>()
         .Where(x => x.IsVisible())
         .OrderByDescending(x => x.CreateDate);
+
+    // get the items needed for the current page
+    var listings = allListings
+        .Skip((currentPage - 1) * ITEMS_PER_PAGE)
+        .Take(ITEMS_PER_PAGE);
+
+    // calculate how many pages are needed (for the pagination buttons)
+    int maxPages = (int)Math.Ceiling(allListings.Count() / (double)ITEMS_PER_PAGE);
 }
 
 
@@ -81,25 +100,23 @@
             <div class="col-sm-12">
                 <nav class="pagination-a">
                     <ul class="pagination justify-content-end">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">
-                                <span class="ion-ios-arrow-back"></span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item next">
-                            <a class="page-link" href="#">
-                                <span class="ion-ios-arrow-forward"></span>
-                            </a>
-                        </li>
+
+                        @for (int i = 1; i <= maxPages; i++)
+                        {
+                            if (i == currentPage)
+                            {
+                                <li class="page-item active">
+                                    <a class="page-link" href="?page=@i">@i</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@i">@i</a>
+                                </li>
+                            }
+                        }
+
                     </ul>
                 </nav>
             </div>
