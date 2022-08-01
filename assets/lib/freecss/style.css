@@ -1292,7 +1292,8 @@ a:hover {
 }
 
 .card-header-c {
-  padding: 0 1rem 1rem 1rem;
+    padding: 0 1rem 1rem 1rem;
+    border: 5px solid #2eca6a;
 }
 
 .card-body-c {
@@ -1304,13 +1305,16 @@ a:hover {
 }
 
 .card-box-ico {
-  padding: 1rem 3rem 1rem 2.5rem;
-  border: 5px solid #2eca6a;
+  padding: 1rem 3rem 1rem 2.5rem
 }
 
 .card-box-ico span {
   font-size: 4rem;
   color: #000000;
+}
+
+.card-title-c {
+    padding-right: 2.5rem;
 }
 
 .title-c {
