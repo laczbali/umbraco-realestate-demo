@@ -70,7 +70,7 @@ a:hover {
 }
 
 .link-a:hover {
-  color: #ffffff;
+  /*color: #ffffff;*/
   text-decoration: none;
 }
 
@@ -1020,6 +1020,12 @@ a:hover {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 27%, rgba(0, 0, 0, 0.65) 90%);
 }
 
+.img-a {
+    height: 300px;
+    object-position: center;
+    object-fit: cover;
+}
+
 /*======================================
 //--//-->   PROPERTY - CARD-A
 ======================================*/
@@ -1764,17 +1770,17 @@ footer .credits {
     font-size: .9rem;
   }
 
-  .card-box-a:hover .card-overlay-a-content {
+/*  .card-box-a:hover .card-overlay-a-content {
     bottom: 60px;
   }
 
   .card-box-a:hover .card-body-a {
     padding-bottom: 1rem;
-  }
-
+  }*/
+/*
   .card-overlay-a-content {
     bottom: -20px;
-  }
+  }*/
 
   .card-header-a .card-title-a {
     font-size: 1.3rem;
@@ -1808,9 +1814,9 @@ footer .credits {
     font-size: 1.8rem;
   }
 
-  .card-box-d .card-overlay-hover {
+/*  .card-box-d .card-overlay-hover {
     padding: 5px 15px 5px 10px;
-  }
+  }*/
 
   .card-box-d .title-d {
     font-size: 1.1rem;
@@ -1840,18 +1846,18 @@ footer .credits {
   }
 }
 
-@media (min-width: 768px) and (min-width: 768px) {
+/*@media (min-width: 768px) and (min-width: 768px) {
   .card-box-a:hover .card-overlay-a-content {
     bottom: 60px;
   }
-}
+}*/
 
-@media (min-width: 768px) and (min-width: 992px) {
+/*@media (min-width: 768px) and (min-width: 992px) {
   .card-box-a:hover .card-overlay-a-content {
     bottom: 64px;
   }
 }
-
+*/
 @media (min-width: 992px) {
   .link-a {
     font-size: 1rem;
@@ -1919,10 +1925,10 @@ footer .credits {
     font-size: 2.5rem;
   }
 
-  .card-box-d .card-overlay-hover {
+/*  .card-box-d .card-overlay-hover {
     padding: 5px 40px 5px 35px;
   }
-
+*/
   .card-box-d .title-d {
     font-size: 1.5rem;
     margin: 1rem 0;
@@ -1943,9 +1949,9 @@ footer .credits {
 }
 
 @media (min-width: 1200px) {
-  .card-box-d .card-overlay-hover {
+/*  .card-box-d .card-overlay-hover {
     padding: 15px 40px 5px 35px;
-  }
+  }*/
 
   .card-box-d .title-d {
     font-size: 2rem;
@@ -1997,13 +2003,13 @@ footer .credits {
     margin-bottom: 2.5rem;
   }
 
-  .card-box-a .card-overlay-a-content {
+/*  .card-box-a .card-overlay-a-content {
     bottom: 65px;
-  }
+  }*/
 
-  .card-box-a .card-body-a {
+/*  .card-box-a .card-body-a {
     padding-bottom: 1rem;
-  }
+  }*/
 
   .property-agent {
     margin-top: 2.5rem;
