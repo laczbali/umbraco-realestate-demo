@@ -126,21 +126,3 @@
     </div>
 </section>
 
-@*<div style="padding-top: 12rem;">
-        These are the listings
-
-        @{
-            var selection = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
-                .Children()
-                .Where(x => x.IsVisible());
-        }
-        <ul>
-            @foreach (var item in selection)
-            {
-                <li>
-                    <a href="@item.Url">@item.Name</a>
-                </li>
-            }
-        </ul>
-
-    </div>*@
