@@ -4,12 +4,14 @@
 @using Umbraco.Web.PublishedModels
 
 @{
-	Layout = "Master.cshtml";
+    Layout = "Master.cshtml";
 
-	var listings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
-	.Children()
-	.OfType<ListingItem>()
-	.Where(x => x.IsVisible());
+    var listings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
+    .Children()
+    .OfType<ListingItem>()
+    .Where(x => x.IsVisible())
+    .OrderBy(x => x.CreateDate)
+	.Take(3);
 }
 
 @* the fun starts here *@
