@@ -61,14 +61,26 @@
     public static MvcHtmlString RenderElementAttributes(dynamic contentItem)
     {
         var attrs = new List<string>();
+        var cssClasses = new List<string>();
         JObject cfg = contentItem.config;
 
         if(cfg != null)
+        {
             foreach (JProperty property in cfg.Properties())
             {
                 var propertyValue = HttpUtility.HtmlAttributeEncode(property.Value.ToString());
-                attrs.Add(property.Name + "=\"" + propertyValue + "\"");
+
+                if(property.Name.Contains("class-"))
+                {
+                    cssClasses.Add(propertyValue);
+                }
+                else
+                {
+                    attrs.Add(property.Name + "=\"" + propertyValue + "\"");
+                }
             }
+            attrs.Add("class=\"" + String.Join(" ", cssClasses) + "\"");
+        }
 
         JObject style = contentItem.styles;
 
