@@ -10,8 +10,8 @@
     .Children()
     .OfType<ListingItem>()
     .Where(x => x.IsVisible())
-    .OrderBy(x => x.CreateDate)
-	.Take(3);
+    .OrderByDescending(x => x.CreateDate)
+    .Take(3);
 }
 
 @* the fun starts here *@
