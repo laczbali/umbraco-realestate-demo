@@ -22,11 +22,14 @@ This is a repo for an at-home task, to get introduced to the Umbraco CMS.
 
 **Notes**
 A great resource to learn Umbraco v8 is [this playlist](https://www.youtube.com/playlist?list=PL90L_HquhD-_N2mO8kYzhZL15sh1lyxVK)
+Umbraco API doc is [here](https://our.umbraco.com/apidocs/v8/csharp/api/Umbraco.Core.Models.html)
 
 **Questions**
 - General setup
   - How does a proper .gitignore look?
   - Can Visual Studio be configured for proper intelisense?
+	- Lots of ambiguous calls if App_Data is included and it won't build
+	- No type hinting if it is not included
   - Build \ Run process outside of Visual Studio?
 - Database
   - Any way to easily migrate database contents?
