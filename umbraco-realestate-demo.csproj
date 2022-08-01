@@ -298,6 +298,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Models\all.dll.path" />
+    <Content Include="App_Data\Models\models.hash" />
     <Content Include="assets\css\style.css" />
     <Content Include="assets\css\umbraco-grid.css" />
     <Content Include="assets\js\main.js" />
@@ -359,6 +361,22 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Data\Models\About.generated.cs" />
+    <Compile Include="App_Data\Models\ContentControls.generated.cs" />
+    <Compile Include="App_Data\Models\File.generated.cs" />
+    <Compile Include="App_Data\Models\Folder.generated.cs" />
+    <Compile Include="App_Data\Models\Home.generated.cs" />
+    <Compile Include="App_Data\Models\Image.generated.cs" />
+    <Compile Include="App_Data\Models\ListingControls.generated.cs" />
+    <Compile Include="App_Data\Models\ListingItem.generated.cs" />
+    <Compile Include="App_Data\Models\ListingPage.generated.cs" />
+    <Compile Include="App_Data\Models\Listings.generated.cs" />
+    <Compile Include="App_Data\Models\Member.generated.cs" />
+    <Compile Include="App_Data\Models\UmbracoMediaArticle.generated.cs" />
+    <Compile Include="App_Data\Models\UmbracoMediaAudio.generated.cs" />
+    <Compile Include="App_Data\Models\UmbracoMediaVectorGraphics.generated.cs" />
+    <Compile Include="App_Data\Models\UmbracoMediaVideo.generated.cs" />
+    <Compile Include="Controllers\ListingPageController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -408,6 +426,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
