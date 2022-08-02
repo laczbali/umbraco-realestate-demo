@@ -1,0 +1,7 @@
+.card-fading {
+    transition: opacity 1s;
+}
+
+.card-fading-isopaque {
+    opacity: 0;
+}

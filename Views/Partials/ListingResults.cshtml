@@ -1,0 +1,151 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+
+@{
+    var url = Request.Url;
+
+    const int ITEMS_PER_PAGE = 2;
+
+    // get which page the user is currently on (default to the first page if not found)
+    int currentPage;
+    int.TryParse(Request.QueryString["page"], out currentPage);
+    if (currentPage == 0)
+    {
+        currentPage = 1;
+    }
+
+    // get all listings, sort by most recent first
+    var allListings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
+        .Children()
+        .OfType<ListingItem>()
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate);
+
+    // get the items needed for the current page
+    var listings = allListings
+        .Skip((currentPage - 1) * ITEMS_PER_PAGE)
+        .Take(ITEMS_PER_PAGE);
+
+    // calculate how many pages are needed (for the pagination buttons)
+    int maxPages = (int)Math.Ceiling(allListings.Count() / (double)ITEMS_PER_PAGE);
+}
+
+<div class="row">
+    <div class="col-12">
+        <div>DEBUG</div>
+        <div>
+            url: @url
+            <br />
+            current-page: @currentPage
+            <br />
+            max-pages: @maxPages
+        </div>
+    </div>
+</div>
+
+@* results start *@
+<div class="row">
+    @foreach (var item in listings)
+    {
+
+        <div class="col-md-4">
+            <div class="card-box-a card-shadow card-fading card-fading-isopaque">
+                <div class="img-box-a">
+                    <img src="@item.Images.First().Url()" alt="" class="img-a img-fluid">
+                </div>
+                <div class="card-overlay">
+                    <div class="card-overlay-a-content">
+                        <div class="card-header-a">
+                            <h2 class="card-title-a">
+                                <span>
+                                    @item.Headline
+                                </span>
+                            </h2>
+                        </div>
+                        <div class="card-body-a">
+                            <div class="price-box d-flex">
+                                <a href="@item.Url()" class="price-a">@item.ListingType | @String.Format("{0:# ##0 ##0}", item.Price) kr.</a>
+                            </div>
+                            <a href="@item.Url()" class="link-a">
+                                Click here to view
+                                <span class="ion-ios-arrow-forward"></span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@* results end *@
+
+@* pagination start *@
+<div class="row">
+    <div class="col-sm-12">
+        <nav class="pagination-a">
+            <ul class="pagination justify-content-end">
+
+                @if (currentPage > 1 && maxPages > 1)
+                {
+                    //back arrrow is active
+                    <li class="page-item next">
+                        <div class="page-link" onclick="getPage(@( currentPage - 1 ))" tabindex="-1">
+                            <span class="ion-ios-arrow-back"></span>
+                        </div>
+                    </li>
+                        }
+                else
+                {
+                    // back arrow inactive
+                    <li class="page-item disabled">
+                        <div class="page-link" tabindex="-1">
+                            <span class="ion-ios-arrow-back"></span>
+                        </div>
+                    </li>
+                }
+
+                @for (int i = 1; i <= maxPages; i++)
+                {
+                    if (i == currentPage)
+                    {
+                        <li class="page-item active">
+                            @paginationButton(i)
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            @paginationButton(i)
+                        </li>
+                    }
+                }
+
+                @if (currentPage < maxPages)
+                {
+                    //forward arrrow is active
+                    <li class="page-item next">
+                        <div class="page-link" onclick="getPage(@( currentPage + 1 ))" tabindex="-1">
+                            <span class="ion-ios-arrow-forward"></span>
+                        </div>
+                    </li>
+                        }
+                else
+                {
+                    // forward arrow inactive
+                    <li class="page-item disabled">
+                        <div class="page-link" tabindex="-1">
+                            <span class="ion-ios-arrow-forward"></span>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </nav>
+    </div>
+</div>
+@* pagination end *@
+
+@helper paginationButton(int pageNumber)
+{
+    <div class="page-link" onclick="getPage(@pageNumber)">@pageNumber</div>
+}
