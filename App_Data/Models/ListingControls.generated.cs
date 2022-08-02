@@ -47,7 +47,7 @@ namespace Umbraco.Web.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.18.4")]
 		int Price { get; }
 
-		/// <summary>Region</summary>
+		/// <summary>region</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.18.4")]
 		string Region { get; }
 
@@ -156,13 +156,13 @@ namespace Umbraco.Web.PublishedModels
 		public static int GetPrice(IListingControls that) => that.Value<int>("price");
 
 		///<summary>
-		/// Region: Which region of the country is the listing located
+		/// region
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.18.4")]
 		[ImplementPropertyType("region")]
 		public virtual string Region => GetRegion(this);
 
-		/// <summary>Static getter for Region</summary>
+		/// <summary>Static getter for region</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.18.4")]
 		public static string GetRegion(IListingControls that) => that.Value<string>("region");
 

@@ -87,7 +87,7 @@ namespace Umbraco.Web.PublishedModels
 		public virtual int Price => global::Umbraco.Web.PublishedModels.ListingControls.GetPrice(this);
 
 		///<summary>
-		/// Region: Which region of the country is the listing located
+		/// region
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "8.18.4")]
 		[ImplementPropertyType("region")]

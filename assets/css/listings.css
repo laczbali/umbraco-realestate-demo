@@ -5,3 +5,7 @@
 .card-fading-isopaque {
     opacity: 0;
 }
+
+h6 {
+    margin-top: 0.5rem;
+}

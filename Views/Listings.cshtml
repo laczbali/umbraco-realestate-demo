@@ -1,19 +1,34 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Web.PublishedModels.Listings>
 
 @using ClientDependency.Core.Mvc
+@using Umbraco.Core.Services
+@using Umbraco.Core.PropertyEditors;
 
 @{
     Layout = "Master.cshtml";
 
     // handles filtering & pagination queries
     Html.RequiresJs("/assets/js/listings.js");
-
     // handles fade-in after query
     Html.RequiresCss("/assets/css/listings.css");
+
+    // get info for filtering
+    IDataTypeService dataTypeService = Services.DataTypeService;
+
+    var allTypes = dataTypeService.GetAll();
+
+    var listingTypeDataType = allTypes.Where(dt => dt.Name == "Listing Controls - Listing type - Dropdown").First();
+    var listingTypeDataTypeConfig = (ValueListConfiguration)listingTypeDataType.Configuration;
+    var listingTypeItems = listingTypeDataTypeConfig.Items;
+
+    var regionDataType = allTypes.Where(dt => dt.Name == "Listing Controls - Region - Dropdown").First();
+    var regionDataTypeConfig = (ValueListConfiguration)regionDataType.Configuration;
+    var regionItems = regionDataTypeConfig.Items;
+
+    ITagService tagService = Services.TagService;
+    var tags = tagService.GetAllContentTags("listing-feature");
 }
 
-
-@* the fun starts here *@
 
 @* intro start *@
 <section class="intro-single">
@@ -41,6 +56,89 @@
 </section>
 @* intro end *@
 
+@* search start *@
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-4">
+                @* select if rent or sale *@
+                <div>
+                    <h6>Select listing type</h6>
+                    @foreach (var item in listingTypeItems)
+                    {
+                        <div class="form-check">
+                            <input onchange="filtersChanged()" class="filter-input form-check-input" type="checkbox" value="@item.Value" id="listingtype-@item.Id">
+                            <label class="form-check-label" for="listingtype-@item.Id">
+                                @item.Value
+                            </label>
+                        </div>
+                    }
+                </div>
+
+                @* multi-select for region *@
+                <div>
+                    <h6>Select region</h6>
+                    @foreach (var item in regionItems)
+                    {
+                        <div class="form-check">
+                            <input onchange="filtersChanged()" class="filter-input form-check-input" type="checkbox" value="@item.Value" id="listingregion-@item.Id">
+                            <label class="form-check-label" for="listingregion-@item.Id">
+                                @item.Value
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <h6>Set filter ranges</h6>
+                @* min value for area *@
+                <div class="form-group">
+                    <label for="minArea">Minimum area (m<sup>3</sup>)</label>
+                    <input onchange="filtersChanged()" type="number" class="filter-input form-control form-control-sm" id="minArea">
+                </div>
+
+                @* min value for rooms *@
+                <div class="form-group">
+                    <label for="minRooms">Minimum rooms</label>
+                    <input onchange="filtersChanged()" type="number" class="filter-input form-control form-control-sm" id="minRooms">
+                </div>
+
+                @* max value for price *@
+                <div class="form-group">
+                    <label for="maxPrice">Maximum price (kr.)</label>
+                    <input onchange="filtersChanged()" type="number" class="filter-input form-control form-control-sm" id="maxPrice">
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <h6>Seach</h6>
+                <div>
+                    text search
+                </div>
+
+                <h6>Select amenities</h6>
+                <div>
+                    @* mutli-select for tags *@
+                    @foreach (var item in tags)
+                    {
+                        <div class="form-check">
+                            <input onchange="filtersChanged()" class="filter-input form-check-input" type="checkbox" value="@item.Text" id="itemtag-@item.Id">
+                            <label class="form-check-label" for="itemtag-@item.Id">
+                                @item.Text
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</section>
+@* search end *@
 
 @* results will get inserted below *@
 <section class="property-grid grid">

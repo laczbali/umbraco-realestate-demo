@@ -3,7 +3,7 @@
 @{
     var url = Request.Url;
 
-    const int ITEMS_PER_PAGE = 2;
+    const int ITEMS_PER_PAGE = 3;
 
     // get which page the user is currently on (default to the first page if not found)
     int currentPage;
@@ -29,18 +29,6 @@
     int maxPages = (int)Math.Ceiling(allListings.Count() / (double)ITEMS_PER_PAGE);
 }
 
-<div class="row">
-    <div class="col-12">
-        <div>DEBUG</div>
-        <div>
-            url: @url
-            <br />
-            current-page: @currentPage
-            <br />
-            max-pages: @maxPages
-        </div>
-    </div>
-</div>
 
 @* results start *@
 <div class="row">
