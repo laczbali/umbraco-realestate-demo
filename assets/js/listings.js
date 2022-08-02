@@ -13,7 +13,23 @@ async function getPage(pageNumber, filters = null) {
     const baseQueryUrl = urlParts.join("/");
 
     // build query url
-    const queryUrl = `${baseQueryUrl}?page=${pageNumber}`;
+    let queryUrl = baseQueryUrl
+    if (pageNumber !== currentPage()) {
+        // function was called by pagination
+        // collect active filters, and go to needed page
+        queryUrl = `${baseQueryUrl}?page=${pageNumber}`;
+        filters = collectFilters();
+    } else {
+        // function was called by applyFilters
+        // since filters changed, we want to reset to page 1
+        queryUrl = `${baseQueryUrl}?page=1`;
+    }
+    if (filters !== null) {
+        // function was either called by applyFilters, so they are provided
+        // or it was called through pagination, so it was collected
+        // if it is null, no filters are set by the user
+        queryUrl += filters;
+    }
 
     // display results
     const result = await fetchAsyncText(queryUrl);
@@ -32,39 +48,76 @@ function revealCards() {
     });
 }
 
-function filtersChanged() {
-    // gather filter data
-    let filterData = {
-        checked: {},
-        setNumeric: []
-    };
+function applyFilters() {
+    getPage(currentPage(), collectFilters());
+}
 
-    const inputs = Array.from(document.getElementsByClassName("filter-input"));
-    inputs.forEach(input => {
-        switch (input.type) {
-            case "checkbox":
-                // if it is checked, add it to the checkbox array
-                if (input.checked) {
-                    const checkboxType = input.id.split("-")[0];
-                    if (filterData.checked[checkboxType] === undefined) { filterData.checked[checkboxType] = []; }
-                    filterData.checked[checkboxType].push(input.value);
-                }
-                break;
+function collectFilters() {
+    // build a query string "&tags=a,b&regions=x,y&types=rent"
+    let filterQuery = "";
 
-            case "number":
-                // if the value is not empty, add it to the numeric array
-                if (input.value !== null && input.value !== undefined && input.value !== '') {
-                    let numericObject = {};
-                    numericObject[input.id] = Number.parseInt(input.value);
-                    filterData.setNumeric.push(numericObject);
-                }
-                break;
-
-            default: console.warn("invalid type " + input.type); break;
+    // get listing type (rent/sale)
+    let typeValues = [];
+    const typeBoxes = Array.from(document.getElementsByClassName("filter-listingtype"));
+    typeBoxes.forEach(box => {
+        if (box.checked) {
+            typeValues.push(box.value);
         }
     });
+    if (typeValues.length > 0) { filterQuery += `&type=${typeValues.join(',')}`; }
 
-    console.log(filterData);
+    // get region
+    let regionValues = [];
+    const regionBoxes = Array.from(document.getElementsByClassName("filter-region"));
+    regionBoxes.forEach(box => {
+        if (box.checked) {
+            regionValues.push(box.value);
+        }
+    });
+    if (regionValues.length > 0) { filterQuery += `&region=${regionValues.join(',')}`; }
+
+    // get tags
+    let tagValues = [];
+    const tagBoxes = Array.from(document.getElementsByClassName("filter-tag"));
+    tagBoxes.forEach(box => {
+        if (box.checked) {
+            tagValues.push(box.value);
+        }
+    });
+    if (tagValues.length > 0) { filterQuery += `&tags=${tagValues.join(',')}`; }
+
+    // get min-area
+    const minAreaInput = document.getElementsByClassName("filter-area")[0];
+    const minAreaValue = Number.parseInt(minAreaInput.value);
+    if (!isNaN(minAreaValue)) {
+        filterQuery += `&min-area=${minAreaValue}`;
+    }
+
+    // get min-rooms
+    const minRoomsInput = document.getElementsByClassName("filter-rooms")[0];
+    const minRoomsValue = Number.parseInt(minRoomsInput.value);
+    if (!isNaN(minRoomsValue)) {
+        filterQuery += `&min-rooms=${minRoomsValue}`;
+    }
+
+    // get max-price
+    const maxPriceInput = document.getElementsByClassName("filter-price")[0];
+    const maxPriceValue = Number.parseInt(maxPriceInput.value);
+    if (!isNaN(maxPriceValue)) {
+        filterQuery += `&max-price=${maxPriceValue}`;
+    }
+
+    if (filterQuery === '') {
+        return null;
+    } else {
+        return encodeURI(filterQuery);
+    }
+}
+
+function currentPage() {
+    const activePageSelector = document.getElementsByClassName("page-selector-current")[0];
+    const currentPageVal = activePageSelector.id.split("-")[1];
+    return currentPageVal;
 }
 
 async function fetchAsyncText(url) {

@@ -9,3 +9,12 @@
 h6 {
     margin-top: 0.5rem;
 }
+
+.listing-filter-apply-col {
+    display: flex;
+}
+
+.listing-filter-apply-btn {
+    margin-top: auto;
+    margin-bottom: 1rem;
+}
