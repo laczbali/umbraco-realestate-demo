@@ -300,42 +300,7 @@
   <ItemGroup>
     <Content Include="App_Data\Models\all.dll.path" />
     <Content Include="App_Data\Models\models.hash" />
-    <Content Include="assets\css\listings.css" />
-    <Content Include="assets\css\umbraco-grid.css" />
-    <Content Include="assets\js\listings.js" />
-    <Content Include="assets\lib\animate\animate.css" />
-    <Content Include="assets\lib\animate\animate.min.css" />
-    <Content Include="assets\lib\bootstrap\css\bootstrap.css" />
-    <Content Include="assets\lib\bootstrap\css\bootstrap.min.css" />
-    <Content Include="assets\lib\bootstrap\css\bootstrap.min.css.map" />
-    <Content Include="assets\lib\bootstrap\js\bootstrap.js" />
-    <Content Include="assets\lib\bootstrap\js\bootstrap.min.js" />
-    <Content Include="assets\lib\bootstrap\js\bootstrap.min.js.map" />
-    <Content Include="assets\lib\easing\easing.js" />
-    <Content Include="assets\lib\easing\easing.min.js" />
-    <Content Include="assets\lib\font-awesome\css\font-awesome.css" />
-    <Content Include="assets\lib\font-awesome\css\font-awesome.min.css" />
-    <Content Include="assets\lib\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\lib\freecss\main.js" />
-    <Content Include="assets\lib\freecss\style.css" />
-    <Content Include="assets\lib\ionicons\css\ionicons.css" />
-    <Content Include="assets\lib\ionicons\css\ionicons.min.css" />
-    <Content Include="assets\lib\ionicons\fonts\ionicons.svg" />
-    <Content Include="assets\lib\jquery\jquery-migrate.min.js" />
-    <Content Include="assets\lib\jquery\jquery.min.js" />
-    <Content Include="assets\lib\owlcarousel\assets\ajax-loader.gif" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.carousel.css" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.carousel.min.css" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.theme.default.css" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.theme.default.min.css" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.theme.green.css" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.theme.green.min.css" />
-    <Content Include="assets\lib\owlcarousel\assets\owl.video.play.png" />
-    <Content Include="assets\lib\owlcarousel\owl.carousel.js" />
-    <Content Include="assets\lib\owlcarousel\owl.carousel.min.js" />
-    <Content Include="assets\lib\popper\popper.min.js" />
-    <Content Include="assets\lib\scrollreveal\scrollreveal.js" />
-    <Content Include="assets\lib\scrollreveal\scrollreveal.min.js" />
+    <Content Include="assets\**\*.*" />
     <Content Include="config\grid.editors.config.js" />
     <Content Include="config\Lang\cs-CZ.user.xml" />
     <Content Include="config\Lang\da-DK.user.xml" />
@@ -361,21 +326,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\Models\About.generated.cs" />
-    <Compile Include="App_Data\Models\ContentControls.generated.cs" />
-    <Compile Include="App_Data\Models\File.generated.cs" />
-    <Compile Include="App_Data\Models\Folder.generated.cs" />
-    <Compile Include="App_Data\Models\Home.generated.cs" />
-    <Compile Include="App_Data\Models\Image.generated.cs" />
-    <Compile Include="App_Data\Models\ListingControls.generated.cs" />
-    <Compile Include="App_Data\Models\ListingItem.generated.cs" />
-    <Compile Include="App_Data\Models\ListingResults.generated.cs" />
-    <Compile Include="App_Data\Models\Listings.generated.cs" />
-    <Compile Include="App_Data\Models\Member.generated.cs" />
-    <Compile Include="App_Data\Models\UmbracoMediaArticle.generated.cs" />
-    <Compile Include="App_Data\Models\UmbracoMediaAudio.generated.cs" />
-    <Compile Include="App_Data\Models\UmbracoMediaVectorGraphics.generated.cs" />
-    <Compile Include="App_Data\Models\UmbracoMediaVideo.generated.cs" />
+    <Compile Include="App_Data\Models\*.generated.cs" />
     <Compile Include="Controllers\ListingResultsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -391,17 +342,6 @@
     <Content Include="config\ClientDependency.config" />
     <Content Include="config\BackOfficeTours\getting-started.json" />
     <Content Include="Database.config" />
-    <Content Include="assets\lib\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="assets\lib\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="assets\lib\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="assets\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="assets\lib\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="assets\lib\ionicons\fonts\ionicons.eot" />
-    <Content Include="assets\lib\ionicons\fonts\ionicons.ttf" />
-    <Content Include="assets\lib\ionicons\fonts\ionicons.woff" />
-    <Content Include="assets\lib\ionicons\fonts\ionicons.woff2" />
-    <Content Include="assets\lib\owlcarousel\LICENSE" />
-    <Content Include="assets\lib\popper\popper.min.js.map" />
     <None Include="packages.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Partials\Grid\Editors\Textstring.cshtml" />
@@ -413,13 +353,8 @@
     <Content Include="Views\Partials\Grid\Bootstrap3.cshtml" />
     <Content Include="Views\Partials\Grid\Bootstrap3-Fluid.cshtml" />
     <Content Include="Views\Partials\BlockList\Default.cshtml" />
-    <Content Include="Views\Home.cshtml" />
-    <Content Include="Views\Master.cshtml" />
-    <Content Include="Views\Partials\Navigation.cshtml" />
-    <Content Include="Views\ListingItem.cshtml" />
-    <Content Include="Views\About.cshtml" />
-    <Content Include="Views\Listings.cshtml" />
-    <Content Include="Views\Partials\ListingResults.cshtml" />
+    <Content Include="Views\*.cshtml" />
+    <Content Include="Views\Partials\*.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
