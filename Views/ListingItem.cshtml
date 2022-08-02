@@ -1,7 +1,11 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Umbraco.Web.PublishedModels.ListingItem>
 
+@using ClientDependency.Core.Mvc
+
 @{
     Layout = "Master.cshtml";
+
+    Html.RequiresCss("/assets/css/listingitem.css");
 }
 
 @* the fun starts here *@

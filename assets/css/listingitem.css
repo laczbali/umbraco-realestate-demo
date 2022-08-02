@@ -1,0 +1,5 @@
+.carousel-item-b img {
+    max-height: 500px;
+    object-position: center;
+    object-fit: cover;
+}

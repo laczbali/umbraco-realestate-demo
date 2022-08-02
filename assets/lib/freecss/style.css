@@ -951,6 +951,7 @@ a:hover {
 
 .intro-single {
   padding: 12rem 0 3rem;
+  padding-top: 8rem;
 }
 
 .intro-single .title-single-box {
@@ -1324,9 +1325,10 @@ a:hover {
 }
 
 .title-c {
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-left: -40px;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-left: -40px;
+    min-width: max-content;
 }
 
 /*======================================
