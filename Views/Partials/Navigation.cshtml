@@ -23,7 +23,7 @@
 				@foreach (var item in pages)
 				{
 					<li class="nav-item active">
-						<a class="nav-link" href="@item.Url">@item.Name</a>
+						<a class="nav-link" href="@item.Url()">@item.Name</a>
 					</li>
 				}
 			</ul>
