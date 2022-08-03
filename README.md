@@ -24,8 +24,10 @@ This is a repo for an at-home task, to get introduced to the Umbraco CMS.
 - Project runs without any issue when cloned on other machines
 
 **Notes**
+
 A great resource to learn Umbraco v8 is [this playlist](https://www.youtube.com/playlist?list=PL90L_HquhD-_N2mO8kYzhZL15sh1lyxVK)
 Umbraco API doc is [here](https://our.umbraco.com/apidocs/v8/csharp/api/Umbraco.Core.Models.html)
+
 ModelBuilder resources:
 - [Official docs](https://our.umbraco.com/Documentation/Reference/Templating/Modelsbuilder/Builder-Modes-v8_5)
 - [Question about type conflicts](https://our.umbraco.com/forum/developers/razor/75519-modelsbuilder-the-type-exists-in-both-webdll-and-temporary)
