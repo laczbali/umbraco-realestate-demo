@@ -1,3 +1,17 @@
+.intro-single {
+    padding-bottom: 1rem;
+}
+
+.search-nav {
+    padding-top: 0;
+}
+
+#searchTerm {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 1rem;
+}
+
 .card-fading {
     transition: opacity 1s;
 }

@@ -2,6 +2,33 @@ window.onload = function () {
     revealCards();
 }
 
+/**
+ *  Goes through each listing card, and removes the opaque class from them, with a bit of a delay
+ * */
+function revealCards() {
+    const cards = Array.from(document.getElementsByClassName("card-fading-isopaque"));
+    cards.forEach(function (card, i) {
+        setTimeout(function () {
+            card.classList.remove("card-fading-isopaque");
+        }, i * 100);
+    });
+}
+
+/**
+ * Gets a specific page of the listings
+ * 
+ * If the pageNumber is the same as the current page,
+ * - assumes the filters have been updated
+ * - resets the page to the first
+ * - will also apply the filter input to the query (if any)
+ * 
+ * If the pageNumber is for a different page,
+ * - collects the currently applied filter settings
+ * - gets the desired page with those filters applied (if any)
+ * 
+ * @param {number} pageNumber
+ * @param {string} filters What filters to apply, as an URL encoded query string (eg: "&key=value&key2=value2")
+ */
 async function getPage(pageNumber, filters = null) {
     const url = window.location.href;
     const urlParts = url.split("/");
@@ -39,19 +66,29 @@ async function getPage(pageNumber, filters = null) {
     revealCards();
 }
 
-function revealCards() {
-    const cards = Array.from(document.getElementsByClassName("card-fading-isopaque"));
-    cards.forEach(function (card, i) {
-        setTimeout(function () {
-            card.classList.remove("card-fading-isopaque");
-        }, i * 250);
-    });
+/**
+ * Builds a query param from the contents of the simple search field
+ * */
+function simpleSearch() {
+    let queryUrl = null;
+    const searchBox = document.getElementById("searchTerm");
+    if (searchBox.value !== "") {
+        queryUrl = `&searchterm=${searchBox.value}`;
+        queryUrl = encodeURI(queryUrl);
+    }
+    getPage(currentPage(), queryUrl)
 }
 
+/**
+ * Queries the listings with the currently applied filters. This will reset pagination to the first page.
+ * */
 function applyFilters() {
     getPage(currentPage(), collectFilters());
 }
 
+/**
+ * Collect the input data from all the search filters (except the simple-search-textbox)
+ * */
 function collectFilters() {
     // build a query string "&tags=a,b&regions=x,y&types=rent"
     let filterQuery = "";
@@ -114,12 +151,20 @@ function collectFilters() {
     }
 }
 
+/**
+ * Returns which page we are currently on (based on the page-selector widget)
+ * */
 function currentPage() {
     const activePageSelector = document.getElementsByClassName("page-selector-current")[0];
+    if (activePageSelector === undefined) { return "1"; }
     const currentPageVal = activePageSelector.id.split("-")[1];
     return currentPageVal;
 }
 
+/**
+ * Sends an HTTP GET request, to the desired URL. Returns the response as TEXT
+ * @param {any} url
+ */
 async function fetchAsyncText(url) {
     let response = await fetch(url);
     let data = await response.text();

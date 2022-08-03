@@ -1,54 +1,106 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
 
-@{
-    var url = Request.Url; // debug
+@using System.Collections.Specialized
+@using Umbraco.Examine
 
+@{
     const int ITEMS_PER_PAGE = 3;
 
-    // get which page the user is currently on (default to the first page if not found)
-    int.TryParse(Request.QueryString["page"], out int currentPage);
-    if (currentPage == 0) { currentPage = 1; }
-
-    // get all listings, sort by most recent first
-    var allListings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
-        .Children()
-        .OfType<ListingItem>()
-        .Where(x => x.IsVisible())
-        .OrderByDescending(x => x.CreateDate);
-
-    // filter listings, based on query parameters
-    var types = Request.QueryString["type"]?.Split(',');
-    var regions = Request.QueryString["region"]?.Split(',');
-    var tags = Request.QueryString["tags"]?.Split(',');
-    int.TryParse(Request.QueryString["min-area"], out int minArea);
-    int.TryParse(Request.QueryString["min-rooms"], out int minRooms);
-    int.TryParse(Request.QueryString["max-price"], out int maxPrice);
-    if(maxPrice == 0) { maxPrice = int.MaxValue; }
-
-    var filteredListings = allListings
-        .Where(x =>
-        {
-            if (x.Size < minArea) { return false; }
-            if (x.Rooms < minRooms) { return false; }
-            if (x.Price > maxPrice) { return false; }
-
-            if ((types != null) && (!types.Contains(x.ListingType))) { return false; }
-            if ((regions != null) && (!regions.Contains(x.Region))) { return false; }
-            if (tags != null)
-            {
-                if (x.Tags.Intersect(tags).Count() != tags.Count()) { return false; }
-            }
-
-            return true;
-        });
+    // search/filter listings, based on query parameters
+    IEnumerable<ListingItem> filteredListings;
+    var queryString = Request.QueryString;
+    var searchTerm = queryString["searchterm"];
+    if (searchTerm != null)
+    {
+        var results = SearchListings(searchTerm);
+        filteredListings = results.Select(res => Umbraco.Content(res.Id)).OfType<ListingItem>();
+    }
+    else
+    {
+        var content = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"));
+        filteredListings = FilterListings(content, queryString);
+    }
 
     // get the items needed for the current page
+    int.TryParse(Request.QueryString["page"], out int currentPage);
+    if (currentPage == 0) { currentPage = 1; }
     var listings = filteredListings
         .Skip((currentPage - 1) * ITEMS_PER_PAGE)
         .Take(ITEMS_PER_PAGE);
 
     // calculate how many pages are needed (for the pagination buttons)
     int maxPages = (int)Math.Ceiling(filteredListings.Count() / (double)ITEMS_PER_PAGE);
+}
+
+@functions {
+    /// <summary>
+    /// Returns a subset of ListingItem-s, based on the query params passed.
+    /// Will check listing type, region, tags, area, rooms, price (if params are provided)
+    /// </summary>
+    /// <param name="content">Umbraco.Content</param>
+    /// <param name="queryString">Request.QueryString</param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public static IEnumerable<ListingItem> FilterListings(
+        IPublishedContent content, NameValueCollection queryString)
+    {
+        // get all listings, sort by most recent first
+        var allListings = content
+            .Children()
+            .OfType<ListingItem>()
+            .Where(x => x.IsVisible())
+            .OrderByDescending(x => x.CreateDate);
+
+        var types = queryString["type"]?.Split(',');
+        var regions = queryString["region"]?.Split(',');
+        var tags = queryString["tags"]?.Split(',');
+        int.TryParse(queryString["min-area"], out int minArea);
+        int.TryParse(queryString["min-rooms"], out int minRooms);
+        int.TryParse(queryString["max-price"], out int maxPrice);
+        if (maxPrice == 0) { maxPrice = int.MaxValue; }
+
+        var filteredListings = allListings
+            .Where(x =>
+            {
+                if (x.Size < minArea) { return false; }
+                if (x.Rooms < minRooms) { return false; }
+                if (x.Price > maxPrice) { return false; }
+
+                if ((types != null) && (!types.Contains(x.ListingType))) { return false; }
+                if ((regions != null) && (!regions.Contains(x.Region))) { return false; }
+                if (tags != null)
+                {
+                    if (x.Tags.Intersect(tags).Count() != tags.Count()) { return false; }
+                }
+
+                return true;
+            });
+
+        return filteredListings;
+    }
+
+    /// <summary>
+    /// Will perform an Examine search on all listing fields
+    /// Returns ListingItem-s as ISearchResult-s matching the 'searchTerm'
+    /// Convert to IPublihsedContents-s with "Umbraco.Content(result.id)"
+    /// Convert those to ListingItem-s with ".OfType<ListingItem>()"
+    /// </summary>
+    /// <param name="searchTerm"></param>
+    /// <returns></returns>
+    public static IEnumerable<ISearchResult> SearchListings(string searchTerm)
+    {
+        ExamineManager.Instance.TryGetIndex("ExternalIndex", out var index);
+        var searcher = index.GetSearcher();
+        var results = searcher
+            .CreateQuery("content")
+            .NodeTypeAlias("listingItem")
+            .And()
+            .ManagedQuery(searchTerm)
+            .Execute()
+            .Where(res => res.Id != null);
+
+        return results;
+    }
 }
 
 
