@@ -1,17 +1,13 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
 
 @{
-    var url = Request.Url;
+    var url = Request.Url; // debug
 
     const int ITEMS_PER_PAGE = 3;
 
     // get which page the user is currently on (default to the first page if not found)
-    int currentPage;
-    int.TryParse(Request.QueryString["page"], out currentPage);
-    if (currentPage == 0)
-    {
-        currentPage = 1;
-    }
+    int.TryParse(Request.QueryString["page"], out int currentPage);
+    if (currentPage == 0) { currentPage = 1; }
 
     // get all listings, sort by most recent first
     var allListings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
@@ -20,18 +16,51 @@
         .Where(x => x.IsVisible())
         .OrderByDescending(x => x.CreateDate);
 
+    // filter listings, based on query parameters
+    var types = Request.QueryString["type"]?.Split(',');
+    var regions = Request.QueryString["region"]?.Split(',');
+    var tags = Request.QueryString["tags"]?.Split(',');
+    int.TryParse(Request.QueryString["min-area"], out int minArea);
+    int.TryParse(Request.QueryString["min-rooms"], out int minRooms);
+    int.TryParse(Request.QueryString["max-price"], out int maxPrice);
+    if(maxPrice == 0) { maxPrice = int.MaxValue; }
+
+    var filteredListings = allListings
+        .Where(x =>
+        {
+            if (x.Size < minArea) { return false; }
+            if (x.Rooms < minRooms) { return false; }
+            if (x.Price > maxPrice) { return false; }
+
+            if ((types != null) && (!types.Contains(x.ListingType))) { return false; }
+            if ((regions != null) && (!regions.Contains(x.Region))) { return false; }
+            if (tags != null)
+            {
+                if (x.Tags.Intersect(tags).Count() != tags.Count()) { return false; }
+            }
+
+            return true;
+        });
+
     // get the items needed for the current page
-    var listings = allListings
+    var listings = filteredListings
         .Skip((currentPage - 1) * ITEMS_PER_PAGE)
         .Take(ITEMS_PER_PAGE);
 
     // calculate how many pages are needed (for the pagination buttons)
-    int maxPages = (int)Math.Ceiling(allListings.Count() / (double)ITEMS_PER_PAGE);
+    int maxPages = (int)Math.Ceiling(filteredListings.Count() / (double)ITEMS_PER_PAGE);
 }
 
 
 @* results start *@
 <div class="row">
+    @if (listings.Count() == 0)
+    {
+        <div class="col">
+            No results, try a different set of search terms
+        </div>
+    }
+
     @foreach (var item in listings)
     {
 
@@ -81,7 +110,7 @@
                             <span class="ion-ios-arrow-back"></span>
                         </div>
                     </li>
-                        }
+                }
                 else
                 {
                     // back arrow inactive
@@ -96,7 +125,7 @@
                 {
                     if (i == currentPage)
                     {
-                        <li class="page-item active">
+                        <li class="page-item active page-selector-current" id="currentpage-@i">
                             @paginationButton(i)
                         </li>
                     }
@@ -116,7 +145,7 @@
                             <span class="ion-ios-arrow-forward"></span>
                         </div>
                     </li>
-                        }
+                }
                 else
                 {
                     // forward arrow inactive
