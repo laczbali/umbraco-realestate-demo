@@ -18,6 +18,7 @@ window.onload = function () {
  * @param {boolean} reuseFilters If true, and filters is null, will re-use the last used filters
  * */
 async function getListings(pageNumber = null, filters = null, reuseFilters = false) {
+    // get the base API url
     const url = window.location.href;
     const urlParts = url.split("/");
     if (urlParts[urlParts.length - 1] === '') { urlParts.pop(); }
@@ -36,11 +37,12 @@ async function getListings(pageNumber = null, filters = null, reuseFilters = fal
         // no filters were provided, but we need to reuse the previous (pagination)
         filters = localStorage.getItem("listings-query");
     }
-    if (filters !== null) {
+    if (filters !== null && filters !== "null") {
         // we have filters (either provided or reused)
-        localStorage.setItem("listings-query", filters);
         queryUrl += filters;
     }
+
+    localStorage.setItem("listings-query", filters);
 
     // fetch & display results
     const result = await fetchAsyncText(queryUrl);
