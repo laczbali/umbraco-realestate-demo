@@ -49,10 +49,6 @@ artifacts/
 *.nuget.props
 *.nuget.targets
 
-# NPM packages
-node_modules/
-assets/lib/
-
 # Umbraco
 [Uu]mbraco/
 # Ignore uploaded media
