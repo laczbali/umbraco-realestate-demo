@@ -389,6 +389,7 @@
     <Content Include="config\uSync8.config" />
     <Content Include="App_Plugins\uSync8\package.manifest" />
     <Content Include="App_Plugins\uSync8\addons.json" />
+    <Content Include="gen_dbconfig.bat" />
     <None Include="packages.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Partials\Grid\Editors\Textstring.cshtml" />
@@ -456,8 +457,7 @@
   <Import Project="packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets" Condition="Exists('packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets')" />
   <Import Project="packages\UmbracoCms.8.18.4\build\UmbracoCms.targets" Condition="Exists('packages\UmbracoCms.8.18.4\build\UmbracoCms.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>..\gen_dbconfig.bat</PreBuildEvent>
   </PropertyGroup>
   <Import Project="packages\uSync.8.11.1\build\uSync.targets" Condition="Exists('packages\uSync.8.11.1\build\uSync.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
