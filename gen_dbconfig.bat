@@ -1,5 +1,12 @@
 @echo off
 
+@REM Database connection string should not be uploaded to git
+@REM By default it is stored in Web.config, which SHOULD be uploaded to git
+@REM Therefore Web.config was set up, so it pulls the connection string from Database.config instead
+@REM However Umbraco fails to start if that file does not exists (like after a fresh clone)
+@REM This script generats that file, as a "blank"
+@REM During the Umbraco first-start-install process, Umbraco will add the connection string to the file
+
 @REM Go from proj\bin\ to proj\
 cd ..
 
