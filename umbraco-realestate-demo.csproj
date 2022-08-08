@@ -403,6 +403,7 @@
     <Content Include="Views\Partials\BlockList\Default.cshtml" />
     <Content Include="Views\*.cshtml" />
     <Content Include="Views\Partials\*.cshtml" />
+    <Content Include="Views\Error404.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
