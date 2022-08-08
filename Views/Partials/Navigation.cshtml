@@ -1,8 +1,11 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
 
 @{
-	var pages = Umbraco.ContentAtRoot()
-	.Where(x => x.IsVisible());;
+    var homePage = Umbraco.ContentAtRoot().First();
+    var pages = homePage
+        .Children()
+        .Where(x => x.IsVisible())
+        .Prepend(homePage);
 }
 
 <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
