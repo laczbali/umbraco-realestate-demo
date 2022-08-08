@@ -35,7 +35,7 @@
                 @foreach (var item in listingTypeItems)
                 {
                     <div class="form-check">
-                        <input class="filter-listingtype form-check-input" type="checkbox" value="@item.Value" id="listingtype-@item.Id">
+                        <input name="type" class="filter-input form-check-input" type="checkbox" value="@item.Value" id="listingtype-@item.Id">
                         <label class="form-check-label" for="listingtype-@item.Id">
                             @item.Value
                         </label>
@@ -49,7 +49,7 @@
                 @foreach (var item in regionItems)
                 {
                     <div class="form-check">
-                        <input class="filter-region form-check-input" type="checkbox" value="@item.Value" id="listingregion-@item.Id">
+                        <input name="region" class="filter-input form-check-input" type="checkbox" value="@item.Value" id="listingregion-@item.Id">
                         <label class="form-check-label" for="listingregion-@item.Id">
                             @item.Value
                         </label>
@@ -65,7 +65,7 @@
                 @foreach (var item in tags)
                 {
                     <div class="form-check">
-                        <input class="filter-tag form-check-input" type="checkbox" value="@item.Text" id="itemtag-@item.Id">
+                        <input name="tags" class="filter-input form-check-input" type="checkbox" value="@item.Text" id="itemtag-@item.Id">
                         <label class="form-check-label" for="itemtag-@item.Id">
                             @item.Text
                         </label>
@@ -80,19 +80,19 @@
             @* min value for area *@
             <div class="form-group">
                 <label for="minArea">Minimum area (m<sup>3</sup>)</label>
-                <input type="number" class="filter-area form-control form-control-sm" id="minArea">
+                <input name="min-area" type="number" class="filter-input form-control form-control-sm" id="minArea">
             </div>
 
             @* min value for rooms *@
             <div class="form-group">
                 <label for="minRooms">Minimum rooms</label>
-                <input type="number" class="filter-rooms form-control form-control-sm" id="minRooms">
+                <input name="min-rooms" type="number" class="filter-input form-control form-control-sm" id="minRooms">
             </div>
 
             @* max value for price *@
             <div class="form-group">
                 <label for="maxPrice">Maximum price (kr.)</label>
-                <input type="number" class="filter-price form-control form-control-sm" id="maxPrice">
+                <input name="max-price" type="number" class="filter-input form-control form-control-sm" id="maxPrice">
             </div>
         </div>
 

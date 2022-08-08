@@ -58,8 +58,7 @@ function simpleSearch() {
     let queryUrl = null;
     const searchBox = document.getElementById("searchTerm");
     if (searchBox.value !== "") {
-        queryUrl = `&searchterm=${searchBox.value}`;
-        queryUrl = encodeURI(queryUrl);
+        queryUrl = `&searchterm=${encodeURIComponent(searchBox.value)}`;
     }
 
     getListings(null, queryUrl);
@@ -86,64 +85,40 @@ function getPage(pageNumber) {
  * Returns null, if no filters are specified
  * */
 function collectFilters() {
-    // build a query string "&tags=a,b&regions=x,y&types=rent"
-    let filterQuery = "";
+    let filter = {};
 
-    // get listing type (rent/sale)
-    let typeValues = [];
-    const typeBoxes = Array.from(document.getElementsByClassName("filter-listingtype"));
-    typeBoxes.forEach(box => {
-        if (box.checked) {
-            typeValues.push(box.value);
+    // go through each input, add value to output if set
+    const inputs = Array.from(document.getElementsByClassName("filter-input"));
+    inputs.forEach(input => {
+        switch (input.type) {
+            case 'checkbox':
+                if (input.checked) {
+                    // add to filter, if checkbox is checked
+                    if (filter[input.name] === undefined) { filter[input.name] = []; }
+                    filter[input.name].push(encodeURIComponent(input.value));
+                }
+                break;
+
+            default:
+                if (input.value !== '' && input.value !== null) {
+                    // add to filter, if value is not empty
+                    if (filter[input.name] === undefined) { filter[input.name] = []; }
+                    filter[input.name].push(encodeURIComponent(input.value));
+                }
+                break;
         }
     });
-    if (typeValues.length > 0) { filterQuery += `&type=${typeValues.join(',')}`; }
 
-    // get region
-    let regionValues = [];
-    const regionBoxes = Array.from(document.getElementsByClassName("filter-region"));
-    regionBoxes.forEach(box => {
-        if (box.checked) {
-            regionValues.push(box.value);
-        }
-    });
-    if (regionValues.length > 0) { filterQuery += `&region=${regionValues.join(',')}`; }
+    // join keys (input-groups) by '&' and values by ','
+    const result = Object.keys(filter).map(key => {
+        return `${key}=${filter[key].join(',')}`;
+    }).join('&');
 
-    // get tags
-    let tagValues = [];
-    const tagBoxes = Array.from(document.getElementsByClassName("filter-tag"));
-    tagBoxes.forEach(box => {
-        if (box.checked) {
-            tagValues.push(box.value);
-        }
-    });
-    if (tagValues.length > 0) { filterQuery += `&tags=${tagValues.join(',')}`; }
-
-    // get min-area
-    const minAreaInput = document.getElementsByClassName("filter-area")[0];
-    const minAreaValue = Number.parseInt(minAreaInput.value);
-    if (!isNaN(minAreaValue)) {
-        filterQuery += `&min-area=${minAreaValue}`;
-    }
-
-    // get min-rooms
-    const minRoomsInput = document.getElementsByClassName("filter-rooms")[0];
-    const minRoomsValue = Number.parseInt(minRoomsInput.value);
-    if (!isNaN(minRoomsValue)) {
-        filterQuery += `&min-rooms=${minRoomsValue}`;
-    }
-
-    // get max-price
-    const maxPriceInput = document.getElementsByClassName("filter-price")[0];
-    const maxPriceValue = Number.parseInt(maxPriceInput.value);
-    if (!isNaN(maxPriceValue)) {
-        filterQuery += `&max-price=${maxPriceValue}`;
-    }
-
-    if (filterQuery === '') {
-        return null;
+    // return result, if any
+    if (result !== '') {
+        return '&' + result;
     } else {
-        return encodeURI(filterQuery);
+        return null;
     }
 }
 
