@@ -133,6 +133,36 @@ function collectFilters() {
 }
 
 /**
+ * Clears all filter inputs & re-queries the listings
+ * */
+function clearTerms() {
+    // only run if needed (last query was made with search/filter terms)
+    const lastQuery = localStorage.getItem('listings-query');
+    if (lastQuery === undefined || lastQuery === null || lastQuery === 'null') { return; }
+
+    // clear filters
+    const inputs = Array.from(document.getElementsByClassName("filter-input"));
+    inputs.forEach(input => {
+        switch (input.type) {
+            case 'checkbox':
+                input.checked = false;
+                break;
+
+            default:
+                input.value = '';
+                break;
+        }
+    });
+
+    // clear searchbox
+    const searchBox = document.getElementById("searchTerm");
+    searchBox.value = '';
+
+    // re-query listings
+    getListings(null, null, false);
+}
+
+/**
  *  Goes through each listing card, and removes the opaque class from them, with a bit of a delay
  * */
 function revealCards() {
