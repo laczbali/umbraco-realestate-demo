@@ -6,8 +6,7 @@
 @{
     Layout = "Master.cshtml";
 
-    var listings = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"))
-    .Children()
+    var listings = Umbraco.ContentAtXPath("//listingItem")
     .OfType<ListingItem>()
     .Where(x => x.IsVisible())
     .OrderByDescending(x => x.CreateDate)

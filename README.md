@@ -33,6 +33,7 @@ This is a repo for an at-home task, to get introduced to the Umbraco CMS.
 - Examine docs
 	- [Overview](https://our.umbraco.com/documentation/reference/searching/examine/)
 	- [Getting started](https://our.umbraco.com/Documentation/Reference/Searching/Examine/Quick-Start/index-v8)
+- XPath help is [here](https://our.umbraco.com/documentation/Reference/Querying/UmbracoHelper/#contentatxpathstring-xpath)
 
 
 **Questions**

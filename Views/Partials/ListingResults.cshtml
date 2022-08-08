@@ -17,7 +17,7 @@
     }
     else
     {
-        var content = Umbraco.Content(Guid.Parse("060b468a-cc88-426b-a612-c391433adde2"));
+        var content = Umbraco.ContentAtXPath("//listings").First();
         filteredListings = FilterListings(content, queryString);
     }
 
