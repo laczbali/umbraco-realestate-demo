@@ -67,7 +67,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 d-flex mb-3">
-                        <input type="text" class="form-control form-control-sm" id="searchTerm">
+                        <input type="text" name="searchterm" class="form-control form-control-sm" id="searchTerm" onkeyup="processSearchChange()">
+
                         <button type="button" class="btn btn-b-n" onclick="simpleSearch()">
                             <span class="fa fa-search"></span>
                         </button>

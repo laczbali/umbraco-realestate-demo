@@ -65,11 +65,21 @@ function simpleSearch() {
 }
 
 /**
+ * Calls simpleSerach with debouncing
+ * */
+const processSearchChange = debounce(() => simpleSearch());
+
+/**
  * Queries the listings with the applied filters (1st page)
  * */
 function applyFilters() {
     getListings(null, collectFilters());
 }
+
+/**
+ * Calls applyFilters with debouncing
+ * */
+const processFilterChange = debounce(() => applyFilters());
 
 /**
  * Gets the desired page, with the current parameters
@@ -142,4 +152,21 @@ async function fetchAsyncText(url) {
     let response = await fetch(url);
     let data = await response.text();
     return data;
+}
+
+/**
+ * Runs a callback function after debouncing
+ * 
+ * Call as
+ * const processInput = debounce(() => callback());
+ * <input onkeyup="processInput()" ...>
+ * @param {any} func
+ * @param {any} timeout
+ */
+function debounce(func, timeout = 600) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
 }
