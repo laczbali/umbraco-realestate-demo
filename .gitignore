@@ -58,7 +58,7 @@ artifacts/
 **/App_Data/[Pp]review/
 **/App_Data/TEMP/
 **/App_Data/NuGetBackup/
-**/App_Data/Models/
+!**/App_Data/Models/
 # ImageProcessor Disk Cache 
 **/App_Data/cache/
 # Ignore Umbraco content cache
