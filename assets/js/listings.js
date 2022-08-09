@@ -17,7 +17,7 @@ window.onload = function () {
  * @param {string} filters Will be applied if not null 
  * @param {boolean} reuseFilters If true, and filters is null, will re-use the last used filters
  * */
-async function getListings(pageNumber = null, filters = null, reuseFilters = false) {
+function getListings(pageNumber = null, filters = null, reuseFilters = false) {
     // get the base API url
     const url = window.location.href;
     const urlParts = url.split("/");
@@ -45,10 +45,12 @@ async function getListings(pageNumber = null, filters = null, reuseFilters = fal
     localStorage.setItem("listings-query", filters);
 
     // fetch & display results
-    const result = await fetchAsyncText(queryUrl);
-    const resultsContainer = document.getElementById("results-container");
-    resultsContainer.innerHTML = result;
-    revealCards();
+    fetchUrl(queryUrl, (request) => {
+        const result = request.responseText;
+        const resultsContainer = document.getElementById("results-container");
+        resultsContainer.innerHTML = result;
+        revealCards();
+    });
 }
 
 /**
@@ -175,13 +177,18 @@ function revealCards() {
 }
 
 /**
- * Sends an HTTP GET request, to the desired URL. Returns the response as TEXT
+ * Sends an HTTP GET request, to the desired URL. Once it is done, it calls 'callback' with the response object
  * @param {any} url
+ * @param {any} callback
  */
-async function fetchAsyncText(url) {
-    let response = await fetch(url);
-    let data = await response.text();
-    return data;
+function fetchUrl(url, callback) {
+    const http = new XMLHttpRequest();
+    http.open("GET", url);
+    http.send();
+    http.onreadystatechange = (event) => {
+        if (event.target.readyState !== 4) { return; }
+        callback(event.target);
+    };
 }
 
 /**
