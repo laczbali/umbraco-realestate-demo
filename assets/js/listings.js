@@ -14,74 +14,44 @@ window.onload = function () {
  * - When called by the paginations, it queries the requested page, with the last used additional params
  * 
  * @param {number} pageNumber If null, the 1st page will be queried
- * @param {string} filters Will be applied if not null 
+ * @param {URLSearchParams} filters Will be applied if not null 
  * @param {boolean} reuseFilters If true, and filters is null, will re-use the last used filters
  * */
 function getListings(pageNumber = null, filters = null, reuseFilters = false) {
     // get the base API url
-    const url = window.location.href;
-    const urlParts = url.split("/");
-    if (urlParts[urlParts.length - 1] === '') { urlParts.pop(); }
-    // remove the last part of the url, as it points the list-view
-    urlParts.pop();
-    // add the part for the query controller
-    urlParts.push("listing-results");
-    const baseQueryUrl = urlParts.join("/");
+    const queryUrl = new URL("../listing-results", window.location.href);
 
     // add page number
     if (pageNumber === null) { pageNumber = 1; }
-    let queryUrl = `${baseQueryUrl}?page=${pageNumber}`;
+    queryUrl.searchParams.append("page", pageNumber)
 
     // add filters, if applicable
     if (filters === null && reuseFilters) {
         // no filters were provided, but we need to reuse the previous (pagination)
-        filters = localStorage.getItem("listings-query");
+        const oldFilter = localStorage.getItem("listings-query");
+        if (oldFilter !== null && oldFilter !== "null") {
+            filters = new URLSearchParams(oldFilter);
+        } else {
+            filters = new URLSearchParams();
+        }
     }
     if (filters !== null && filters !== "null") {
         // we have filters (either provided or reused)
-        queryUrl += filters;
+            for (const [key, value] of filters.entries()) {
+                queryUrl.searchParams.append(key, value);
+            }
     }
 
-    localStorage.setItem("listings-query", filters);
+    localStorage.setItem("listings-query", filters ? filters.toString() : null);
 
     // fetch & display results
-    fetchUrl(queryUrl, (request) => {
+    fetchUrl(queryUrl.href, (request) => {
         const result = request.responseText;
         const resultsContainer = document.getElementById("results-container");
         resultsContainer.innerHTML = result;
         revealCards();
     });
 }
-
-/**
- * Queries the listings with the contents of the simple search field (1st page)
- * */
-function simpleSearch() {
-    let queryUrl = null;
-    const searchBox = document.getElementById("searchTerm");
-    if (searchBox.value !== "") {
-        queryUrl = `&searchterm=${encodeURIComponent(searchBox.value)}`;
-    }
-
-    getListings(null, queryUrl);
-}
-
-/**
- * Calls simpleSerach with debouncing
- * */
-const processSearchChange = debounce(() => simpleSearch());
-
-/**
- * Queries the listings with the applied filters (1st page)
- * */
-function applyFilters() {
-    getListings(null, collectFilters());
-}
-
-/**
- * Calls applyFilters with debouncing
- * */
-const processFilterChange = debounce(() => applyFilters());
 
 /**
  * Gets the desired page, with the current parameters
@@ -92,12 +62,33 @@ function getPage(pageNumber) {
 }
 
 /**
+ * Queries the listings with the contents of the simple search field (1st page)
+ * */
+function simpleSearch() {
+    let queryUrl = null;
+    const searchBox = document.getElementById("searchTerm");
+    if (searchBox.value !== "") {
+        queryUrl = new URLSearchParams();
+        queryUrl.append("searchterm", searchBox.value)
+    }
+
+    getListings(null, queryUrl);
+}
+
+/**
+ * Calls simpleSerach with debouncing
+ * */
+const processSearchChange = debounce(
+    () => simpleSearch()
+);
+
+/**
  * Collect the input data from all the search filters (except the simple-search-textbox)
- * Returns the URL encoded query string (" &region=North&tags=parking,pet-friendly ")
+ * Returns them as URLSearchParams
  * Returns null, if no filters are specified
  * */
 function collectFilters() {
-    let filter = {};
+    let filter = new URLSearchParams();;
 
     // go through each input, add value to output if set
     const inputs = Array.from(document.getElementsByClassName("filter-input"));
@@ -106,33 +97,33 @@ function collectFilters() {
             case 'checkbox':
                 if (input.checked) {
                     // add to filter, if checkbox is checked
-                    if (filter[input.name] === undefined) { filter[input.name] = []; }
-                    filter[input.name].push(encodeURIComponent(input.value));
+                    filter.append(input.name, input.value);
                 }
                 break;
 
             default:
                 if (input.value !== '' && input.value !== null) {
                     // add to filter, if value is not empty
-                    if (filter[input.name] === undefined) { filter[input.name] = []; }
-                    filter[input.name].push(encodeURIComponent(input.value));
+                    filter.append(input.name, input.value);
                 }
                 break;
         }
     });
 
-    // join keys (input-groups) by '&' and values by ','
-    const result = Object.keys(filter).map(key => {
-        return `${key}=${filter[key].join(',')}`;
-    }).join('&');
-
     // return result, if any
-    if (result !== '') {
-        return '&' + result;
+    if (filter.toString() !== '') {
+        return filter;
     } else {
         return null;
     }
 }
+
+/**
+ * Calls applyFilters with debouncing
+ * */
+const processFilterChange = debounce(
+    () => getListings(null, collectFilters())
+);
 
 /**
  * Clears all filter inputs & re-queries the listings
