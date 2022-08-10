@@ -376,7 +376,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Data\Models\*.generated.cs" />
-    <Compile Include="Controllers\ListingResultsController.cs" />
+    <Compile Include="Controllers\ListingsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

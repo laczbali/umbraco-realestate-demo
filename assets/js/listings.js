@@ -19,7 +19,7 @@ window.onload = function () {
  * */
 function getListings(pageNumber = null, filters = null, reuseFilters = false) {
     // get the base API url
-    const queryUrl = new URL("../listing-results", window.location.href);
+    const queryUrl = new URL("/umbraco/surface/listings/get", window.location.href);
 
     // add page number
     if (pageNumber === null) { pageNumber = 1; }
