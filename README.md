@@ -34,20 +34,7 @@ This is a repo for an at-home task, to get introduced to the Umbraco CMS.
 	- [Overview](https://our.umbraco.com/documentation/reference/searching/examine/)
 	- [Getting started](https://our.umbraco.com/Documentation/Reference/Searching/Examine/Quick-Start/index-v8)
 - XPath help is [here](https://our.umbraco.com/documentation/Reference/Querying/UmbracoHelper/#contentatxpathstring-xpath)
-
-
-**Questions**
-- General setup
-  - How does a proper .gitignore look?
-  - Am I setting up ModelsBuilder properly? 
-	- in `web.config` I set `ModelsBuilder.ModelsMode` to `LiveAppData`
-	- I included the `App_Data\Models` folder into the project
-	- Added `App_Data\Models` to git
-  - Build \ Run process outside of Visual Studio?
-- Database
-  - Any way to easily migrate database contents?
-  - Any way to store backoffice settings in a JSON or something?
-  - Can it work with a non-SQL Server DB?
-- Usage
-  - How to configure page URLs?
-  - Scoped CSS?
+- Sometimes the `roslyn`, `amd64`, `x86` folders don't get created during build in `bin`, after a clone. Running `Clean + Rebuild` fixes this.
+- After the Umbraco install process is done, it says it encountered an error. But it didn't.
+  - The site works
+  - The logfile in App_Data\Logs contains no errors
