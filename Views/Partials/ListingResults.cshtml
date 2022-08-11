@@ -154,67 +154,30 @@
         <nav class="pagination-a">
             <ul class="pagination justify-content-end">
 
-                @if (currentPage > 1 && maxPages > 1)
-                {
-                    //back arrrow is active
-                    <li class="page-item next">
-                        <div class="page-link" onclick="getPage(@( currentPage - 1 ))" tabindex="-1">
-                            <span class="ion-ios-arrow-back"></span>
-                        </div>
-                    </li>
-                }
-                else
-                {
-                    // back arrow inactive
-                    <li class="page-item disabled">
-                        <div class="page-link" tabindex="-1">
-                            <span class="ion-ios-arrow-back"></span>
-                        </div>
-                    </li>
-                }
+                @*back arrrow*@
+                <li class="page-item next @((currentPage > 1 && maxPages > 1) ? "" : "disabled")">
+                    <div class="page-link" tabindex="-1" onclick="getPage(@( currentPage - 1 ))">
+                        <span class="ion-ios-arrow-back"></span>
+                    </div>
+                </li>
+
 
                 @for (int i = 1; i <= maxPages; i++)
                 {
-                    if (i == currentPage)
-                    {
-                        <li class="page-item active page-selector-current" id="currentpage-@i">
-                            @paginationButton(i)
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item">
-                            @paginationButton(i)
-                        </li>
-                    }
+                    <li class="page-item @(i==currentPage ? "active page-selector-current" : "" )">
+                        <div class="page-link" onclick="getPage(@i)">@i</div>
+                    </li>
                 }
 
-                @if (currentPage < maxPages)
-                {
-                    //forward arrrow is active
-                    <li class="page-item next">
-                        <div class="page-link" onclick="getPage(@( currentPage + 1 ))" tabindex="-1">
-                            <span class="ion-ios-arrow-forward"></span>
-                        </div>
-                    </li>
-                }
-                else
-                {
-                    // forward arrow inactive
-                    <li class="page-item disabled">
-                        <div class="page-link" tabindex="-1">
-                            <span class="ion-ios-arrow-forward"></span>
-                        </div>
-                    </li>
-                }
+                @*forward arrrow*@
+                <li class="page-item next @(currentPage < maxPages ? "" : "disabled")">
+                    <div class="page-link" tabindex="-1" onclick="getPage(@( currentPage + 1 ))">
+                        <span class="ion-ios-arrow-forward"></span>
+                    </div>
+                </li>
 
             </ul>
         </nav>
     </div>
 </div>
 @* pagination end *@
-
-@helper paginationButton(int pageNumber)
-{
-    <div class="page-link" onclick="getPage(@pageNumber)">@pageNumber</div>
-}
