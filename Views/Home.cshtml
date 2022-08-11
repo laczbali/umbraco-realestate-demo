@@ -6,7 +6,7 @@
 @{
     Layout = "Master.cshtml";
 
-    var listings = Umbraco.ContentAtXPath("//listingItem")
+    var listings = Umbraco.ContentAtXPath("//listingItem[@isDoc]")
     .OfType<ListingItem>()
     .Where(x => x.IsVisible())
     .OrderByDescending(x => x.CreateDate)

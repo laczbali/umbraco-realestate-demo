@@ -17,7 +17,7 @@
     }
     else
     {
-        var content = Umbraco.ContentAtXPath("//listings").First();
+        var content = Umbraco.ContentAtXPath("//listings[@isDoc]").First();
         filteredListings = FilterListings(content, queryString);
     }
 
