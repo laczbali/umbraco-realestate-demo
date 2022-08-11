@@ -5,7 +5,13 @@
     var pages = homePage
         .Children()
         .Where(x => x.IsVisible())
-        .Prepend(homePage);
+        .Prepend(homePage)
+        .ToDictionary(x => x, x => x.IsAncestorOrSelf(Model));
+
+    if(pages.Count(x => x.Value) > 1)
+    {
+        pages[homePage] = false;
+    }
 }
 
 <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
@@ -24,9 +30,9 @@
 		<div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
 			<ul class="navbar-nav">
 				@foreach (var item in pages)
-				{
-					<li class="nav-item active">
-						<a class="nav-link" href="@item.Url()">@item.Name</a>
+                {
+					<li class="nav-item @(item.Value ? "active" : "")">
+						<a class="nav-link" href="@item.Key.Url()">@item.Key.Name</a>
 					</li>
 				}
 			</ul>
