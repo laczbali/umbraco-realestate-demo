@@ -10,6 +10,7 @@ using umbraco_realestate_demo.Database;
 using umbraco_realestate_demo.Database.Models;
 using Umbraco.Web;
 using Newtonsoft.Json;
+using Umbraco.Core.Models;
 
 namespace umbraco_realestate_demo.Components
 {
@@ -50,7 +51,7 @@ namespace umbraco_realestate_demo.Components
                     item.Rooms = node.GetValue<int>("rooms");
 
                     // remove tags that are not needed
-                    var nodeTags = JsonConvert.DeserializeObject<IEnumerable<string>>(node.GetValue<string>("tags"));
+                    var nodeTags = JsonConvert.DeserializeObject<string[]>(node.GetValue<string>("tags"));
                     item.Tags.RemoveAll(t => !nodeTags.Contains(t.Name));
                     // add tags, if missing
                     foreach (var tag in nodeTags)
@@ -58,7 +59,7 @@ namespace umbraco_realestate_demo.Components
                         var dbTag = context.Tags.FirstOrDefault(t => t.Name == tag);
                         if (dbTag == null)
                         {
-                            dbTag = new Tag(tag);
+                            dbTag = new Database.Models.Tag(tag);
                             context.Tags.Add(dbTag);
                         }
 
@@ -68,7 +69,26 @@ namespace umbraco_realestate_demo.Components
                         }
                     }
 
+                    // remove media that are not needed
+                    var nodeImages = JsonConvert.DeserializeAnonymousType(node.GetValue<string>("images"), new[] { new { mediaKey = "", key = "" } } );
+                    var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
+                    var nodeMedia = helper.Media(nodeImages.Select(m => m.mediaKey)).Select(m => m.Url());
+                    context.Media.RemoveRange(context.Media.Where(m => !nodeMedia.Contains(m.Filepath)));
+                    // add media, if missing
+                    foreach (var media in nodeMedia)
+                    {
+                        var dbMedia = context.Media.FirstOrDefault(t => t.Filepath == media);
+                        if (dbMedia == null)
+                        {
+                            dbMedia = new Database.Models.Media(media);
+                            context.Media.Add(dbMedia);
+                        }
 
+                        if (!item.Media.Contains(dbMedia))
+                        {
+                            item.Media.Add(dbMedia);
+                        }
+                    }
 
                     context.SaveChanges();
 
