@@ -2,58 +2,55 @@
 
 @using ClientDependency.Core.Mvc
 @using Umbraco.Web.PublishedModels
+@using umbraco_realestate_demo.Utils
 
 @{
     Layout = "Master.cshtml";
 
-    var listings = Umbraco.ContentAtXPath("//listingItem[@isDoc]")
-    .OfType<ListingItem>()
-    .Where(x => x.IsVisible())
-    .OrderByDescending(x => x.CreateDate)
-    .Take(3);
+    var listings = ListingFinder.GetLatestFromDb();
 }
 
 @* the fun starts here *@
 
 
 <div class="intro intro-carousel">
-	<div id="carousel" class="owl-carousel owl-theme">
+    <div id="carousel" class="owl-carousel owl-theme">
 
-		@foreach (var item in listings)
-		{
-			<div class="carousel-item-a intro-item bg-image" style="background-image: url(@item.Images.First().Url()">
-				<div class="overlay overlay-a"></div>
-				<div class="intro-content display-table">
-					<div class="table-cell">
-						<div class="container">
-							<div class="row">
-								<div class="col-lg-8">
-									<div class="intro-body">
-										<p class="intro-title-top">
-											@item.Region Region
-										</p>
-										<h1 class="intro-title mb-4">
-											@item.Headline
-										</h1>
-										<p class="intro-subtitle intro-price">
-											<a href="@item.Url()">
-												<span class="price-a">
-													@item.ListingType | @String.Format("{0:# ##0 ##0}", item.Price) kr.
-												</span>
-											</a>
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		}
+        @foreach (var item in listings)
+        {
+            <div class="carousel-item-a intro-item bg-image" style="background-image: url(@item.Media[0].Filepath)">
+                <div class="overlay overlay-a"></div>
+                <div class="intro-content display-table">
+                    <div class="table-cell">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="intro-body">
+                                        <p class="intro-title-top">
+                                            @item.Region Region
+                                        </p>
+                                        <h1 class="intro-title mb-4">
+                                            @item.HeadLine
+                                        </h1>
+                                        <p class="intro-subtitle intro-price">
+                                            <a href="listing\@item.Id">
+                                                <span class="price-a">
+                                                    @item.ListingType | @String.Format("{0:# ##0 ##0}", item.Price) kr.
+                                                </span>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 
-	</div>
+    </div>
 </div>
 
 <div>
-	@Html.GetGridHtml(Model, "mainContent")
+    @Html.GetGridHtml(Model, "mainContent")
 </div>
