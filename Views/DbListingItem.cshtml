@@ -1,0 +1,43 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage
+
+@using ClientDependency.Core.Mvc
+@using umbraco_realestate_demo.Utils
+
+@{
+    Layout = "Master.cshtml";
+    var id = (int)ViewData["id"];
+    var item = ListingFinder.GetListingFromDb(id);
+}
+
+<div style="padding-top: 8rem;">
+
+    <div class="mb-3">
+        This is <b>@item.HeadLine</b>
+    </div>
+
+    <div class="mb-3">
+        Media
+        <ul>
+            @foreach (var img in item.Media)
+            {
+                <li>
+                    <img src="@img.Filepath" style="width: 90px; height: 90px;" class="mb-1" />
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="mb-3">
+        Tags
+        <ul>
+            @foreach (var tag in item.Tags)
+            {
+                <li>
+                    @tag.Name
+                </li>
+            }
+        </ul>
+    </div>
+    
+</div>
+
