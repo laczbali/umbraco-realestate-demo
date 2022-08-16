@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace umbraco_realestate_demo.Database.Models
 {
@@ -6,6 +9,7 @@ namespace umbraco_realestate_demo.Database.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public string Contact { get; set; }
         public string Description { get; set; }
