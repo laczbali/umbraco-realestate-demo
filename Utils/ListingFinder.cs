@@ -9,11 +9,44 @@ using Umbraco.Web.Models;
 using Umbraco.Web.PublishedModels;
 using Umbraco.Examine;
 using System.Collections.Specialized;
+using umbraco_realestate_demo.Database;
 
 namespace umbraco_realestate_demo.Utils
 {
 	public class ListingFinder
 	{
+		/// <summary>
+		/// Returns a listing item from the custom DB
+		/// </summary>
+		/// <param name="id">The items ID in the custom DB</param>
+		/// <returns></returns>
+		public static Database.Models.ListingItem GetListingFromDb(int id)
+		{
+			using (var context = new ListingContext())
+			{
+				var item = context.ListingItems
+					.Include("Media").Include("Tags")
+					.FirstOrDefault(i => i.Id == id);
+				return item;
+			}
+        }
+
+		/// <summary>
+		/// Returns the latest items from the custom DB (based on the CreateDate field)
+		/// </summary>
+		/// <param name="numItems">How many items should it return</param>
+		/// <returns></returns>
+		public static IEnumerable<Database.Models.ListingItem> GetLatestFromDb(int numItems = 3)
+		{
+            using (var context = new ListingContext())
+			{
+                var latest = context.ListingItems
+					.Include("Media")
+					.OrderByDescending(x => x.CreateDate).Take(numItems);
+                return latest.ToList();
+            }
+        }
+
 		/// <summary>
 		/// Will perform an Examine search on all listing fields
 		/// Returns ListingItem-s matching the 'searchTerm'
