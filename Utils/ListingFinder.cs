@@ -56,21 +56,16 @@ namespace umbraco_realestate_demo.Utils
         /// <returns></returns>
         public IEnumerable<ListingItem> SearchListings(string searchTerm)
         {
-            throw new NotImplementedException();
-            //Examine.ExamineManager.Instance.TryGetIndex("ExternalIndex", out var index);
-            //var searcher = index.GetSearcher();
-            //var results = searcher
-            //    .CreateQuery("content")
-            //    .NodeTypeAlias("listingItem")
-            //    .And()
-            //    .ManagedQuery(searchTerm)
-            //    .Execute()
-            //    .Where(res => res.Id != null);
-
-            //var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
-            //return results
-            //    .Select(res => helper.Content(res.Id))
-            //    .OfType<ListingItem>();
+            var results = _context.ListingItems
+                .Include("Media")
+                .Where(x =>
+                    x.Description.Contains(searchTerm)
+                    || x.HeadLine.Contains(searchTerm)
+                    || x.ListingType.Contains(searchTerm)
+                    || x.Region.Contains(searchTerm)
+                    || x.Tags.Select(t => t.Name).Any(tag => tag.Contains(searchTerm))
+                );
+            return results.ToList();
         }
 
         /// <summary>

@@ -5,6 +5,7 @@
 
 @{
     Layout = "Master.cshtml";
+    Html.RequiresCss("/assets/css/listingitem.css");
     var id = (int)ViewData["id"];
 
     var listingFinder = DependencyResolver.Current.GetService<ListingFinder>();

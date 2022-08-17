@@ -14,8 +14,7 @@
     IEnumerable<umbraco_realestate_demo.Database.Models.ListingItem> filteredListings;
     if (searchTerm != null)
     {
-        //filteredListings = ListingFinder.SearchListings(searchTerm);
-        filteredListings = new List<umbraco_realestate_demo.Database.Models.ListingItem>();
+        filteredListings = listingFinder.SearchListings(searchTerm);
     }
     else
     {
