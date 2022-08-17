@@ -6,10 +6,10 @@ using System.Web.Mvc;
 using Umbraco.Core;
 using Umbraco.Web;
 using Umbraco.Web.Models;
-using Umbraco.Web.PublishedModels;
 using Umbraco.Examine;
 using System.Collections.Specialized;
 using umbraco_realestate_demo.Database;
+using umbraco_realestate_demo.Database.Models;
 
 namespace umbraco_realestate_demo.Utils
 {
@@ -20,7 +20,7 @@ namespace umbraco_realestate_demo.Utils
         /// </summary>
         /// <param name="id">The items ID in the custom DB</param>
         /// <returns></returns>
-        public static Database.Models.ListingItem GetListing(int id)
+        public static ListingItem GetListing(int id)
         {
             using (var context = new ListingContext())
             {
@@ -36,7 +36,7 @@ namespace umbraco_realestate_demo.Utils
         /// </summary>
         /// <param name="numItems">How many items should it return</param>
         /// <returns></returns>
-        public static IEnumerable<Database.Models.ListingItem> GetLatest(int numItems = 3)
+        public static IEnumerable<ListingItem> GetLatest(int numItems = 3)
         {
             using (var context = new ListingContext())
             {
@@ -55,20 +55,21 @@ namespace umbraco_realestate_demo.Utils
         /// <returns></returns>
         public static IEnumerable<ListingItem> SearchListings(string searchTerm)
         {
-            Examine.ExamineManager.Instance.TryGetIndex("ExternalIndex", out var index);
-            var searcher = index.GetSearcher();
-            var results = searcher
-                .CreateQuery("content")
-                .NodeTypeAlias("listingItem")
-                .And()
-                .ManagedQuery(searchTerm)
-                .Execute()
-                .Where(res => res.Id != null);
+            throw new NotImplementedException();
+            //Examine.ExamineManager.Instance.TryGetIndex("ExternalIndex", out var index);
+            //var searcher = index.GetSearcher();
+            //var results = searcher
+            //    .CreateQuery("content")
+            //    .NodeTypeAlias("listingItem")
+            //    .And()
+            //    .ManagedQuery(searchTerm)
+            //    .Execute()
+            //    .Where(res => res.Id != null);
 
-            var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
-            return results
-                .Select(res => helper.Content(res.Id))
-                .OfType<ListingItem>();
+            //var helper = Umbraco.Web.Composing.Current.UmbracoHelper;
+            //return results
+            //    .Select(res => helper.Content(res.Id))
+            //    .OfType<ListingItem>();
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace umbraco_realestate_demo.Utils
         /// </summary>
         /// <param name="queryString">Request.QueryString</param>
         /// <returns></returns>
-        public static IEnumerable<Database.Models.ListingItem> FilterListings(NameValueCollection queryParams)
+        public static IEnumerable<ListingItem> FilterListings(NameValueCollection queryParams)
         {
             var types = queryParams["type"] != null ? queryParams["type"].Split(',') : new string[] {};
             var typeslen = types.Length; // ( 'ArrayLength' is not supported in LINQ to Entities. )
