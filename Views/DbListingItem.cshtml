@@ -6,7 +6,9 @@
 @{
     Layout = "Master.cshtml";
     var id = (int)ViewData["id"];
-    var item = ListingFinder.GetListing(id);
+
+    var listingFinder = DependencyResolver.Current.GetService<ListingFinder>();
+    var item = listingFinder.GetListing(id);
 }
 
 <div style="padding-top: 8rem;">

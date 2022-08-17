@@ -385,6 +385,7 @@
     <Compile Include="App_Data\Models\*.generated.cs" />
     <Compile Include="Components\CustomRoutesComponent.cs" />
     <Compile Include="Components\PublishEventComponent.cs" />
+    <Compile Include="Components\ServiceComposer.cs" />
     <Compile Include="Controllers\ListingController.cs" />
     <Compile Include="Controllers\ListingResultsController.cs" />
     <Compile Include="Database\Models\Media.cs" />

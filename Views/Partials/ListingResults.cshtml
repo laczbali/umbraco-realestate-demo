@@ -9,6 +9,8 @@
     // search/filter listings, based on query parameters
     var queryString = Request.QueryString;
     var searchTerm = queryString["searchterm"];
+
+    var listingFinder = DependencyResolver.Current.GetService<ListingFinder>();
     IEnumerable<umbraco_realestate_demo.Database.Models.ListingItem> filteredListings;
     if (searchTerm != null)
     {
@@ -17,7 +19,7 @@
     }
     else
     {
-        filteredListings = ListingFinder.FilterListings(queryString);
+        filteredListings = listingFinder.FilterListings(queryString);
     }
 
     // get the items needed for the current page

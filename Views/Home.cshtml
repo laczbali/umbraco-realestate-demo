@@ -7,7 +7,8 @@
 @{
     Layout = "Master.cshtml";
 
-    var listings = ListingFinder.GetLatest();
+    var listingFinder = DependencyResolver.Current.GetService<ListingFinder>();
+    var listings = listingFinder.GetLatest();
 }
 
 @* the fun starts here *@

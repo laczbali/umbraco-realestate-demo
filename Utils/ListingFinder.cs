@@ -15,20 +15,24 @@ namespace umbraco_realestate_demo.Utils
 {
     public class ListingFinder
     {
+        private readonly ListingContext _context;
+
+        public ListingFinder(ListingContext context)
+        {
+            _context = context;
+        }
+
         /// <summary>
         /// Returns a listing item from the custom DB
         /// </summary>
         /// <param name="id">The items ID in the custom DB</param>
         /// <returns></returns>
-        public static ListingItem GetListing(int id)
+        public ListingItem GetListing(int id)
         {
-            using (var context = new ListingContext())
-            {
-                var item = context.ListingItems
-                    .Include("Media").Include("Tags")
-                    .FirstOrDefault(i => i.Id == id);
-                return item;
-            }
+            var item = _context.ListingItems
+                .Include("Media").Include("Tags")
+                .FirstOrDefault(i => i.Id == id);
+            return item;
         }
 
         /// <summary>
@@ -36,15 +40,12 @@ namespace umbraco_realestate_demo.Utils
         /// </summary>
         /// <param name="numItems">How many items should it return</param>
         /// <returns></returns>
-        public static IEnumerable<ListingItem> GetLatest(int numItems = 3)
+        public IEnumerable<ListingItem> GetLatest(int numItems = 3)
         {
-            using (var context = new ListingContext())
-            {
-                var latest = context.ListingItems
-                    .Include("Media")
-                    .OrderByDescending(x => x.CreateDate).Take(numItems);
-                return latest.ToList();
-            }
+            var latest = _context.ListingItems
+                .Include("Media")
+                .OrderByDescending(x => x.CreateDate).Take(numItems);
+            return latest.ToList();
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace umbraco_realestate_demo.Utils
         /// </summary>
         /// <param name="searchTerm"></param>
         /// <returns></returns>
-        public static IEnumerable<ListingItem> SearchListings(string searchTerm)
+        public IEnumerable<ListingItem> SearchListings(string searchTerm)
         {
             throw new NotImplementedException();
             //Examine.ExamineManager.Instance.TryGetIndex("ExternalIndex", out var index);
@@ -78,15 +79,15 @@ namespace umbraco_realestate_demo.Utils
         /// </summary>
         /// <param name="queryString">Request.QueryString</param>
         /// <returns></returns>
-        public static IEnumerable<ListingItem> FilterListings(NameValueCollection queryParams)
+        public IEnumerable<ListingItem> FilterListings(NameValueCollection queryParams)
         {
-            var types = queryParams["type"] != null ? queryParams["type"].Split(',') : new string[] {};
+            var types = queryParams["type"] != null ? queryParams["type"].Split(',') : new string[] { };
             var typeslen = types.Length; // ( 'ArrayLength' is not supported in LINQ to Entities. )
 
-            var regions = queryParams["region"] != null ? queryParams["region"].Split(',') : new string[] {};
+            var regions = queryParams["region"] != null ? queryParams["region"].Split(',') : new string[] { };
             var regionlen = regions.Length; // ( 'ArrayLength' is not supported in LINQ to Entities. )
 
-            var tags = queryParams["tags"] != null ? queryParams["tags"].Split(',') : new string[] {};
+            var tags = queryParams["tags"] != null ? queryParams["tags"].Split(',') : new string[] { };
             var taglen = tags.Length;  // ( 'ArrayLength' is not supported in LINQ to Entities. )
 
             int.TryParse(queryParams["min-area"], out int minArea);
@@ -94,21 +95,18 @@ namespace umbraco_realestate_demo.Utils
             int.TryParse(queryParams["max-price"], out int maxPrice);
             if (maxPrice == 0) { maxPrice = int.MaxValue; }
 
-            using (var context = new ListingContext())
-            {
-                var filteredListings = context.ListingItems
-                    .Include("Tags").Include("Media")
-                    .Where(x =>
-                        x.Size >= minArea
-                        && x.Rooms >= minRooms
-                        && x.Price <= maxPrice
-                        && (typeslen == 0 || types.Contains(x.ListingType))
-                        && (regionlen == 0 || regions.Contains(x.Region))
-                        && (x.Tags.Select(t => t.Name).Intersect(tags).Count() == taglen)
-                    );
+            var filteredListings = _context.ListingItems
+                .Include("Tags").Include("Media")
+                .Where(x =>
+                    x.Size >= minArea
+                    && x.Rooms >= minRooms
+                    && x.Price <= maxPrice
+                    && (typeslen == 0 || types.Contains(x.ListingType))
+                    && (regionlen == 0 || regions.Contains(x.Region))
+                    && (x.Tags.Select(t => t.Name).Intersect(tags).Count() == taglen)
+                );
 
-                return filteredListings.ToList();
-            }
+            return filteredListings.ToList();
         }
 
     }
