@@ -9,10 +9,11 @@
     // search/filter listings, based on query parameters
     var queryString = Request.QueryString;
     var searchTerm = queryString["searchterm"];
-    IEnumerable<ListingItem> filteredListings;
+    IEnumerable<umbraco_realestate_demo.Database.Models.ListingItem> filteredListings;
     if (searchTerm != null)
     {
-        filteredListings = ListingFinder.SearchListings(searchTerm);
+        //filteredListings = ListingFinder.SearchListings(searchTerm);
+        filteredListings = new List<umbraco_realestate_demo.Database.Models.ListingItem>();
     }
     else
     {
@@ -46,22 +47,22 @@
         <div class="col-md-4">
             <div class="card-box-a card-shadow card-fading card-fading-isopaque">
                 <div class="img-box-a">
-                    <img src="@item.Images.First().Url()" alt="" class="img-a img-fluid">
+                    <img src="@item.Media[0].Filepath" alt="" class="img-a img-fluid">
                 </div>
                 <div class="card-overlay">
                     <div class="card-overlay-a-content">
                         <div class="card-header-a">
                             <h2 class="card-title-a">
                                 <span>
-                                    @item.Headline
+                                    @item.HeadLine
                                 </span>
                             </h2>
                         </div>
                         <div class="card-body-a">
                             <div class="price-box d-flex">
-                                <a href="@item.Url()" class="price-a">@item.ListingType | @String.Format("{0:# ##0 ##0}", item.Price) kr.</a>
+                                <a href="\listing\@item.Id" class="price-a">@item.ListingType | @String.Format("{0:# ##0 ##0}", item.Price) kr.</a>
                             </div>
-                            <a href="@item.Url()" class="link-a">
+                            <a href="\listing\@item.Id" class="link-a">
                                 Click here to view
                                 <span class="ion-ios-arrow-forward"></span>
                             </a>
