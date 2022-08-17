@@ -10,7 +10,7 @@ using Umbraco.Web.PublishedModels;
 
 namespace umbraco_realestate_demo.Controllers
 {
-	public class ListingsController : Umbraco.Web.Mvc.SurfaceController
+	public class ListingResultsController : Umbraco.Web.Mvc.SurfaceController
 	{
 		[OutputCache(Duration = 0)]
         public ActionResult Get()

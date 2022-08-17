@@ -386,7 +386,7 @@
     <Compile Include="Components\CustomRoutesComponent.cs" />
     <Compile Include="Components\PublishEventComponent.cs" />
     <Compile Include="Controllers\ListingController.cs" />
-    <Compile Include="Controllers\ListingsController.cs" />
+    <Compile Include="Controllers\ListingResultsController.cs" />
     <Compile Include="Database\Models\Media.cs" />
     <Compile Include="Database\Models\Tag.cs" />
     <Compile Include="Database\Models\ListingItem.cs" />
