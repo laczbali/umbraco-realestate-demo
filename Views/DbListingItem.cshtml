@@ -6,7 +6,7 @@
 @{
     Layout = "Master.cshtml";
     var id = (int)ViewData["id"];
-    var item = ListingFinder.GetListingFromDb(id);
+    var item = ListingFinder.GetListing(id);
 }
 
 <div style="padding-top: 8rem;">

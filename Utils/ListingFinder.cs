@@ -20,7 +20,7 @@ namespace umbraco_realestate_demo.Utils
 		/// </summary>
 		/// <param name="id">The items ID in the custom DB</param>
 		/// <returns></returns>
-		public static Database.Models.ListingItem GetListingFromDb(int id)
+		public static Database.Models.ListingItem GetListing(int id)
 		{
 			using (var context = new ListingContext())
 			{
@@ -36,7 +36,7 @@ namespace umbraco_realestate_demo.Utils
 		/// </summary>
 		/// <param name="numItems">How many items should it return</param>
 		/// <returns></returns>
-		public static IEnumerable<Database.Models.ListingItem> GetLatestFromDb(int numItems = 3)
+		public static IEnumerable<Database.Models.ListingItem> GetLatest(int numItems = 3)
 		{
             using (var context = new ListingContext())
 			{
